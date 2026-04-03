@@ -15,9 +15,14 @@ def download():
         print("请先安装 huggingface_hub：pip install huggingface_hub")
         sys.exit(1)
 
+    # 已下载则跳过（Railway 重启时不重复下载）
+    model_file = os.path.join(WEIGHTS_DIR, "model.safetensors")
+    if os.path.isfile(model_file):
+        print(f"模型已存在，跳过下载：{model_file}")
+        return
+
     print(f"开始下载 BiRefNet-general 模型（约 1GB）...")
     print(f"目标目录：{WEIGHTS_DIR}")
-    print("如果下载慢，可先执行：set HF_ENDPOINT=https://hf-mirror.com")
     print("-" * 50)
 
     os.makedirs(WEIGHTS_DIR, exist_ok=True)

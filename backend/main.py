@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -5,10 +6,16 @@ from routers import remove_bg, upscale, resize, watermark
 
 app = FastAPI(title="PicEdit API", version="1.0.0")
 
-# CORS：允许前端 dev server 跨域
+# CORS：允许本地开发 + Vercel 前端（通过环境变量 ALLOWED_ORIGINS 配置）
+_raw_origins = os.environ.get(
+    "ALLOWED_ORIGINS",
+    "http://localhost:5173,http://127.0.0.1:5173"
+)
+allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=allowed_origins,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
