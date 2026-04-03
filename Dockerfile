@@ -21,5 +21,8 @@ COPY backend/ ./backend/
 
 WORKDIR /app/backend
 
+# 赋予启动脚本执行权限
+RUN chmod +x start.sh
+
 # Railway 通过 $PORT 注入端口
-CMD python download_model.py && uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
+CMD ["/bin/bash", "start.sh"]
