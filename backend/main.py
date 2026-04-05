@@ -9,7 +9,7 @@ app = FastAPI(title="PicEdit API", version="1.0.0")
 # CORS：允许本地开发 + Vercel 前端（通过环境变量 ALLOWED_ORIGINS 配置）
 _raw_origins = os.environ.get(
     "ALLOWED_ORIGINS",
-    "http://localhost:5173,http://127.0.0.1:5173"
+    "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:5175,http://127.0.0.1:5175,http://localhost:5176,http://127.0.0.1:5176"
 )
 allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
 

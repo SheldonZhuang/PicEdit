@@ -18,4 +18,4 @@ accelerate==1.12.0
 safetensors==0.7.0
 
 # 图像预处理
-opencv-python-headless==4.11.0.86
+opencv-contrib-python-headless

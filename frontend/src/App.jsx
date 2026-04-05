@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { LangProvider, useLang } from './context/LangContext'
 import Header from './components/Header'
 import DropZone from './components/DropZone'
 import FeatureTabs from './components/FeatureTabs'
@@ -12,17 +13,18 @@ import ErrorToast from './components/ErrorToast'
 import { useImageUpload } from './hooks/useImageUpload'
 import { useProcessing } from './hooks/useProcessing'
 
-const LOADING_MESSAGES = {
-  removebg:  'AI 抠图处理中，首次加载模型约需 15~30 秒...',
-  upscale:   '高清化处理中...',
-  resize:    '缩放处理中...',
-  watermark: '添加水印中...',
-}
-
-export default function App() {
+function AppInner() {
+  const { tr } = useLang()
   const [activeTab, setActiveTab] = useState('removebg')
   const upload = useImageUpload()
   const { isLoading, result, error, process, clearResult } = useProcessing()
+
+  const LOADING_MESSAGES = {
+    removebg:  tr('loading_removebg'),
+    upscale:   tr('loading_upscale'),
+    resize:    tr('loading_resize'),
+    watermark: tr('loading_watermark'),
+  }
 
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab)
@@ -44,8 +46,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-        {/* 上传区域 */}
+      <main className="max-w-3xl mx-auto px-4 py-6 sm:py-8 space-y-6">
         <section>
           <DropZone
             file={upload.file}
@@ -59,7 +60,6 @@ export default function App() {
           />
         </section>
 
-        {/* 功能区（有文件才显示）*/}
         {upload.file && (
           <>
             <section>
@@ -81,7 +81,6 @@ export default function App() {
               )}
             </section>
 
-            {/* 结果预览 */}
             {result && (
               <section>
                 <ImagePreview originalPreview={upload.preview} result={result} />
@@ -91,9 +90,16 @@ export default function App() {
         )}
       </main>
 
-      {/* 全局弹层 */}
       {isLoading && <LoadingSpinner message={LOADING_MESSAGES[activeTab]} />}
       <ErrorToast message={error} onClose={() => clearResult()} />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <LangProvider>
+      <AppInner />
+    </LangProvider>
   )
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Type } from 'lucide-react'
+import { useLang } from '../../context/LangContext'
 
-// 9 宫格布局，null 表示占位（不可点击）
 const POSITIONS = [
   ['top-left', '↖'],    ['top-center', '↑'],    ['top-right', '↗'],
   [null, ''],           ['center', '●'],          [null, ''],
@@ -14,6 +14,7 @@ export default function WatermarkPanel({ onProcess, isLoading }) {
   const [fontSize, setFontSize] = useState(36)
   const [opacity, setOpacity] = useState(0.5)
   const [color, setColor] = useState('#FFFFFF')
+  const { tr } = useLang()
 
   const handleSubmit = () => {
     if (!text.trim()) return
@@ -24,24 +25,22 @@ export default function WatermarkPanel({ onProcess, isLoading }) {
     <div className="bg-white rounded-2xl border border-gray-200 p-6">
       <div className="flex items-center gap-2 mb-5">
         <Type className="w-5 h-5 text-blue-600" />
-        <h2 className="font-semibold text-gray-800">添加水印</h2>
+        <h2 className="font-semibold text-gray-800">{tr('watermark_title')}</h2>
       </div>
 
       <div className="space-y-4">
-        {/* 文字内容 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">水印文字</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">{tr('watermark_text_label')}</label>
           <input
             type="text" value={text}
             onChange={e => setText(e.target.value)}
-            placeholder="请输入水印内容"
+            placeholder={tr('watermark_text_placeholder')}
             className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400"
           />
         </div>
 
-        {/* 位置 3x3 网格 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">水印位置</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">{tr('watermark_position_label')}</label>
           <div className="grid grid-cols-3 gap-1.5 w-36">
             {POSITIONS.map(([pos, symbol], i) =>
               pos === null ? (
@@ -64,10 +63,9 @@ export default function WatermarkPanel({ onProcess, isLoading }) {
           </div>
         </div>
 
-        {/* 字体大小 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">
-            字体大小：<span className="text-blue-600">{fontSize}px</span>
+            {tr('watermark_font_size')}<span className="text-blue-600">{fontSize}px</span>
           </label>
           <input
             type="range" min="12" max="120" value={fontSize}
@@ -76,10 +74,9 @@ export default function WatermarkPanel({ onProcess, isLoading }) {
           />
         </div>
 
-        {/* 透明度 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">
-            透明度：<span className="text-blue-600">{Math.round(opacity * 100)}%</span>
+            {tr('watermark_opacity')}<span className="text-blue-600">{Math.round(opacity * 100)}%</span>
           </label>
           <input
             type="range" min="0" max="100" value={Math.round(opacity * 100)}
@@ -88,9 +85,8 @@ export default function WatermarkPanel({ onProcess, isLoading }) {
           />
         </div>
 
-        {/* 颜色 */}
         <div className="flex items-center gap-3">
-          <label className="text-sm font-medium text-gray-700">颜色</label>
+          <label className="text-sm font-medium text-gray-700">{tr('watermark_color')}</label>
           <input
             type="color" value={color}
             onChange={e => setColor(e.target.value)}
@@ -105,7 +101,7 @@ export default function WatermarkPanel({ onProcess, isLoading }) {
         disabled={isLoading || !text.trim()}
         className="w-full mt-5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-xl transition-colors"
       >
-        {isLoading ? '处理中...' : '添加水印'}
+        {isLoading ? tr('processing') : tr('watermark_btn')}
       </button>
     </div>
   )

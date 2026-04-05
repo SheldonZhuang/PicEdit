@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Minimize2 } from 'lucide-react'
+import { useLang } from '../../context/LangContext'
 
 export default function ResizePanel({ onProcess, isLoading }) {
   const [mode, setMode] = useState('ratio')
@@ -7,6 +8,7 @@ export default function ResizePanel({ onProcess, isLoading }) {
   const [width, setWidth] = useState(800)
   const [height, setHeight] = useState(600)
   const [keepAspect, setKeepAspect] = useState(true)
+  const { tr } = useLang()
 
   const handleSubmit = () => {
     if (mode === 'ratio') {
@@ -20,12 +22,11 @@ export default function ResizePanel({ onProcess, isLoading }) {
     <div className="bg-white rounded-2xl border border-gray-200 p-6">
       <div className="flex items-center gap-2 mb-5">
         <Minimize2 className="w-5 h-5 text-blue-600" />
-        <h2 className="font-semibold text-gray-800">缩放图片</h2>
+        <h2 className="font-semibold text-gray-800">{tr('resize_title')}</h2>
       </div>
 
-      {/* 模式切换 */}
       <div className="flex gap-2 mb-5">
-        {[['ratio', '按比例'], ['fixed', '指定尺寸']].map(([v, label]) => (
+        {[['ratio', tr('resize_mode_ratio')], ['fixed', tr('resize_mode_fixed')]].map(([v, label]) => (
           <button
             key={v}
             onClick={() => setMode(v)}
@@ -41,7 +42,7 @@ export default function ResizePanel({ onProcess, isLoading }) {
       {mode === 'ratio' ? (
         <div className="mb-5">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            缩放比例：<span className="text-blue-600">{ratio}%</span>
+            {tr('resize_ratio_label')}<span className="text-blue-600">{ratio}%</span>
           </label>
           <input
             type="range" min="10" max="200" value={ratio}
@@ -56,7 +57,7 @@ export default function ResizePanel({ onProcess, isLoading }) {
         <div className="mb-5 space-y-3">
           <div className="flex gap-3">
             <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1">宽度 (px)</label>
+              <label className="block text-xs text-gray-500 mb-1">{tr('resize_width')}</label>
               <input
                 type="number" min="1" value={width}
                 onChange={e => setWidth(Number(e.target.value))}
@@ -64,7 +65,7 @@ export default function ResizePanel({ onProcess, isLoading }) {
               />
             </div>
             <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1">高度 (px)</label>
+              <label className="block text-xs text-gray-500 mb-1">{tr('resize_height')}</label>
               <input
                 type="number" min="1" value={height}
                 onChange={e => setHeight(Number(e.target.value))}
@@ -74,7 +75,7 @@ export default function ResizePanel({ onProcess, isLoading }) {
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={keepAspect} onChange={e => setKeepAspect(e.target.checked)} className="accent-blue-600" />
-            <span className="text-sm text-gray-600">保持宽高比</span>
+            <span className="text-sm text-gray-600">{tr('resize_keep_aspect')}</span>
           </label>
         </div>
       )}
@@ -84,7 +85,7 @@ export default function ResizePanel({ onProcess, isLoading }) {
         disabled={isLoading}
         className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-xl transition-colors"
       >
-        {isLoading ? '处理中...' : '开始缩放'}
+        {isLoading ? tr('processing') : tr('resize_btn')}
       </button>
     </div>
   )

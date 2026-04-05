@@ -13,10 +13,21 @@ backend/weights/
 frontend/node_modules/
 frontend/dist/
 
-# Claude Code 本地配置
-.claude/
+# Claude Code 本地个人配置（不入库）
+.claude/settings.local.json
+
+# Claude Code 项目知识库（入库，随代码走）
+# .claude/skills/        ← 已开放
+# .claude/agents/        ← 已开放
+# .claude/templates/     ← 已开放
+
+# 测试临时文件
+backend/test_tmp/
+test_api_img.png
+backend/sheldonprojectPicEditbackendtest_tmpresponse.json
 
 # 系统
 .DS_Store
 Thumbs.db
 *.log
+

@@ -21,7 +21,7 @@ COPY backend/ ./backend/
 
 WORKDIR /app/backend
 
-# 构建阶段下载 BiRefNet 模型（Docker layer 缓存，再次构建自动跳过）
+# 构建阶段下载 BiRefNet 模型 + FSRCNN 超分辨率模型
 RUN python download_model.py
 
 # 启动：Railway 通过 $PORT 注入端口
